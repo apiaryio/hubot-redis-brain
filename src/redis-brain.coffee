@@ -51,6 +51,7 @@ module.exports = (robot) ->
         robot.logger.info "hubot-redis-brain: Initializing new data for #{prefix} brain"
         robot.brain.mergeData {}
 
+      robot.logger.info "hubot-redis-brain: Setting autoSave=true"
       robot.brain.setAutoSave true
 
   if info.auth
@@ -65,9 +66,9 @@ module.exports = (robot) ->
     if /ECONNREFUSED/.test err.message
 
     else
-      robot.logger.error err.stack
+      robot.logger.error 'hubot-redis-brain ERROR:' + (err.message or ''), err.stack
 
-  client.on "connect", ->
+  client.on "ready", ->
     robot.logger.debug "hubot-redis-brain: Successfully connected to Redis"
     getData() if not info.auth
 
